@@ -1,0 +1,124 @@
+{
+ "obra_seminal": {
+  "estado": "pendiente",
+  "ruta": null,
+  "nota": "Sin MP4. Ficha técnica oficial publicada en la página del cortometraje."
+ },
+ "ebook": {
+  "estado": "integrado",
+  "ruta": "ebook/",
+  "fuente": "CONTENIDOS/ebook (copia)",
+  "permisos": "validación final pública pendiente"
+ },
+ "comic": {
+  "estado": "integrado",
+  "ruta": "comic/index.html",
+  "fuente": "CONTENIDOS/COMIC Y POSTERS/CÓMIC BUZIRACO.html (copia sin cambios, 8 MB, 15 págs)",
+  "permisos": "por confirmar"
+ },
+ "videopodcast": {
+  "estado": "embed",
+  "enlace": "https://www.youtube.com/watch?v=xbeH5zjfC9E",
+  "verificado": "oEmbed 200",
+  "creditos": "por confirmar"
+ },
+ "bts": {
+  "estado": "embed",
+  "enlace": "https://www.youtube.com/watch?v=I5kPRg-zfJg",
+  "verificado": "oEmbed 200",
+  "creditos": "por confirmar"
+ },
+ "found_footage": {
+  "estado": "integrado",
+  "ruta": "assets/video/found-footage.mp4",
+  "poster": "assets/video/found-footage-poster.webp",
+  "formato": "H.264/AAC 704x464, 68 s, 11.7 MB, sin recomprimir",
+  "permisos": "por confirmar"
+ },
+ "album": {
+  "estado": "integrado",
+  "portada": "assets/album/portada.webp",
+  "pistas": [
+   {
+    "n": 1,
+    "titulo": "Obertura y Origen",
+    "ruta": "audio/pista-01.mp3",
+    "duracion_s": 378.0
+   },
+   {
+    "n": 2,
+    "titulo": "Prisionero del deseo",
+    "ruta": "audio/pista-02.mp3",
+    "duracion_s": 204.27
+   },
+   {
+    "n": 3,
+    "titulo": "El demonio en la ciudad",
+    "ruta": "audio/pista-03.mp3",
+    "duracion_s": 257.12
+   }
+  ],
+  "fuente": "WAV maestros (no incluidos) -> MP3 192 kbps derivados",
+  "permisos": "AUTORIZAR alojamiento de los MP3 antes de publicar"
+ },
+ "posters": {
+  "estado": "integrado",
+  "rutas": [
+   "assets/posters/poster-1.webp",
+   "assets/posters/poster-2.webp"
+  ],
+  "fuente": "IMG_2642/2643.PNG",
+  "creditos": "por confirmar",
+  "nota": "hero.webp es un recorte del póster 2; miniaturas -thumb.webp derivadas"
+ },
+ "merch": {
+  "estado": "integrado",
+  "rutas": "assets/merch/sticker-1..8.webp",
+  "fuente": "STICKERS*.jpeg",
+  "creditos": "por confirmar",
+  "derivados": "merch/sticker-N-thumb.webp y sticker-cut.webp (recorte circular para el muro)"
+ },
+ "playlist": {
+  "estado": "embed",
+  "youtube": "https://www.youtube.com/playlist?list=PLYOD_bt5EBWU",
+  "spotify": "https://open.spotify.com/playlist/3jyW6KMXYdWBQdva8R9N6a",
+  "verificado": "oEmbed 200 (ambas)",
+  "nota": "ID de YouTube corto: confirmar que sea la playlist completa"
+ },
+ "version": "V5",
+ "descargas": {
+  "el_primer_pacto": [
+   "descargas/el-primer-pacto/El-primer-pacto.pdf",
+   "descargas/el-primer-pacto/El-primer-pacto-texto.txt",
+   "descargas/el-primer-pacto/El-primer-pacto-ilustraciones.zip"
+  ],
+  "comic": [
+   "descargas/comic/Buziraco-comic.pdf"
+  ],
+  "la_suite": [
+   "audio/pista-01.mp3",
+   "audio/pista-02.mp3",
+   "audio/pista-03.mp3",
+   "descargas/la-suite/La-Suite-del-Buziraco.zip"
+  ],
+  "posters": [
+   "descargas/posters/Las-cruces-que-cargamos-poster-A.png",
+   "descargas/posters/Las-cruces-que-cargamos-poster-B.png",
+   "descargas/posters/Posters-Las-cruces-que-cargamos.zip"
+  ],
+  "stickers": [
+   "descargas/stickers/Stickers-Las-cruces-que-cargamos-1..8.jpg",
+   "descargas/stickers/Stickers-Las-cruces-que-cargamos.zip"
+  ],
+  "found_footage": [
+   "assets/video/found-footage.mp4"
+  ],
+  "nota": "Autorizadas por los autores con atribución. Sin licencia abierta. Playlist y videos de YouTube no se descargan."
+ },
+ "derivados": [
+  "assets/portadas/hero.webp (recorte del póster B)",
+  "assets/merch/sticker-cut.webp y sticker-rect-cut.webp (recortes con transparencia de las fotografías, el rectangular con una esquina oculta por otro sticker en la foto original)",
+  "assets/*/ *-thumb.webp",
+  "audio/*.mp3 (MP3 192 kbps derivados de los WAV, con metadatos de autoría)"
+ ]
+}

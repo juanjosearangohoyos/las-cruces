@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0c100e">
+<title>Las cruces que cargamos</title>
+<meta name="description" content="Una ficción de terror urbano sobre el Buziraco y las Tres Cruces de Cali. Un libro, un pódcast, un metraje, un cómic, una suite y más.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230c100e'/%3E%3Cpath d='M16 5v22M9 12h14' stroke='%23e9e1d0' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/v4.css">
+<link rel="stylesheet" href="css/v5.css">
+<link rel="stylesheet" href="css/v6.css">
+</head>
+<body>
+<a class="skip" href="#view">Saltar al contenido</a>
+<header class="site-header">
+  <a class="brand" href="#/" aria-label="Las cruces que cargamos, inicio"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span>LAS CRUCES QUE CARGAMOS</span></a>
+  <nav class="header-nav" aria-label="Navegación principal">
+    <a href="#/universo" data-nav="universo">EL UNIVERSO</a><a href="#/historias" data-nav="historias">HISTORIAS</a><a href="#/detras" data-nav="detras">DETRÁS DEL UNIVERSO</a><a href="#/creditos" data-nav="creditos">CRÉDITOS</a><a href="#/archivo" class="minor" data-nav="archivo">ABRIR EL ARCHIVO</a>
+  </nav>
+  <div class="header-tools">
+    <button type="button" id="simpleBtn" class="tool" aria-pressed="false" title="Quita animaciones y efectos">Modo simple</button>
+    <button type="button" id="menuBtn" class="mobile-nav" aria-expanded="false" aria-controls="mobileMenu">MENÚ ☰</button>
+  </div>
+</header>
+<div id="simpleBar" class="simple-bar" hidden><p><strong>Modo simple activado.</strong> Texto más grande, fondo liso y sin efectos para leer y recorrer con más claridad.</p><button type="button" id="simpleOff" class="btn small">Volver al modo inmersivo</button></div>
+<nav id="mobileMenu" class="mobile-menu" aria-label="Navegación móvil">
+  <a href="#/universo">El universo</a><a href="#/historias">Historias</a><a href="#/detras">Detrás del universo</a><a href="#/creditos">Créditos</a><a href="#/archivo">Abrir el archivo</a>
+</nav>
+
+<p id="liveMsg" class="sr-only" role="status" aria-live="polite"></p>
+<main id="view" tabindex="-1"><noscript><p class="wrap">Esta web necesita JavaScript para mostrar el archivo.</p></noscript></main>
+
+<footer class="footer">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <svg class="foot-cross" viewBox="0 0 120 70" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="5" stroke-linecap="square"><path d="M30 18v44M18 30h24"/><path d="M60 8v54M46 22h28"/><path d="M90 18v44M78 30h24"/></g><path d="M0 66h120" stroke="currentColor" stroke-width="2"/></svg>
+      <p class="foot-title">Las cruces<br>que cargamos</p>
+      <p class="foot-fiction"><strong class="aviso-tag">Aviso</strong> Todo lo que ves aquí es una obra de ficción.</p>
+    </div>
+    <nav class="foot-col" aria-label="Pie de página"><h2>Recorrer</h2><a href="#/archivo">El archivo</a><a href="#/universo">El universo</a><a href="#/creditos">Los créditos</a></nav>
+    <div class="foot-col"><h2>Proyecto transmedia</h2><p>Desarrollado en la asignatura Narrativas Hipertextuales y Transmedia.</p><p>Pontificia Universidad Javeriana Cali.</p><p>Cali, Colombia, 2026.</p></div>
+  </div>
+</footer>
+
+<div id="reader" class="reader" role="dialog" aria-modal="true" aria-labelledby="readerTitle" hidden>
+  <div class="reader-bar"><strong id="readerTitle"></strong><span class="reader-actions"><a id="readerOpen" class="btn" target="_blank" rel="noopener">ABRIR EN PESTAÑA</a><button type="button" id="readerClose" class="btn primary">CERRAR</button></span></div>
+  <p class="reader-note">El audio de esta web no continúa en otra pestaña.</p>
+  <iframe id="readerFrame" title="" allow="fullscreen"></iframe>
+</div>
+
+<div id="player" class="player" role="region" aria-label="Reproductor de La Suite del Buziraco" hidden>
+  <img id="pCover" src="assets/album/portada.webp" alt="" width="48" height="48">
+  <div class="p-info"><b id="pTitle">La Suite del Buziraco</b><small id="pSub">Álbum conceptual</small></div>
+  <button type="button" id="pPrev" aria-label="Pista anterior">⏮</button>
+  <button type="button" id="pPlay" class="primary" aria-label="Reproducir">▶</button>
+  <button type="button" id="pNext" aria-label="Pista siguiente">⏭</button>
+  <span id="pCur" class="time">0:00</span>
+  <input id="pSeek" type="range" min="0" max="100" step="0.1" value="0" aria-label="Progreso de la pista">
+  <span id="pDur" class="time">0:00</span>
+  <label class="vol"><span class="sr-only">Volumen</span><span aria-hidden="true">🔊</span><input id="pVol" type="range" min="0" max="1" step="0.05" value="0.8"></label>
+  <a id="pGo" class="p-link" href="#/objeto/album">Ver álbum</a>
+  <button type="button" id="pClose" aria-label="Cerrar reproductor y detener">×</button>
+  <audio id="audio" preload="none"></audio>
+</div>
+
+<dialog id="lightbox" aria-label="Imagen ampliada"><div class="lb">
+  <button type="button" class="dialog-close" data-close aria-label="Cerrar imagen">×</button>
+  <button type="button" class="lb-nav lb-prev" id="lbPrev" aria-label="Imagen anterior">‹</button>
+  <img id="lbImg" alt="">
+  <button type="button" class="lb-nav lb-next" id="lbNext" aria-label="Imagen siguiente">›</button>
+</div></dialog>
+<script src="js/contenidos.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

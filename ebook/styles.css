@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+/* =========================================================
+   El primer pacto · lector digital
+   Todas las medidas internas de las páginas usan unidades de
+   contenedor (cqw/cqh): la página conserva su proporción 2:3 y
+   su composición a cualquier tamaño, sin scroll interno.
+   ========================================================= */
+:root{
+  --ink:#352821;--warm:#f4eddf;--paper:#fbf5e9;--paper-2:#f2e8d5;
+  --leaf:#39463e;--wine:#663d3a;--muted:#8a7963;--rule:#d3c5ad;--shell:#242c28;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--shell);color:var(--warm)}
+body{font-family:'EB Garamond',Georgia,'Times New Roman',serif;-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid #e2c48d;outline-offset:2px}
+
+.reader-shell{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;overflow-x:hidden}
+
+/* ---------- Barra superior ---------- */
+.toolbar{display:flex;justify-content:space-between;gap:16px;padding:12px clamp(12px,4vw,44px);align-items:center;background:#222b26;border-bottom:1px solid #3b473f}
+.brand{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.brand strong{font-size:25px;font-weight:600}
+.eyebrow{font-family:system-ui,sans-serif;font-size:9px;letter-spacing:1.7px;color:#abb6a9}
+.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.plain-btn{border:1px solid #657268;background:transparent;color:var(--warm);border-radius:40px;padding:8px 14px;font-family:system-ui,sans-serif;font-size:12px;white-space:nowrap}
+.plain-btn:hover,.plain-btn:focus-visible{background:#3b4a40}
+.plain-btn[aria-pressed="true"]{background:#3b4a40;border-color:#9fae9f}
+.lbl-short{display:none}
+.notice{margin:0;padding:9px 16px;background:#3a4a3f;color:var(--warm);font:13px/1.4 system-ui,sans-serif;text-align:center}
+
+/* ---------- Escenario del libro ---------- */
+main{flex:1;display:flex;flex-direction:column;min-height:0}
+.flip-stage{flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;padding:18px 10px 10px;position:relative;overflow:hidden;
+  background:radial-gradient(circle at center,#4b554c 0%,#2b342d 67%,#1c2622 100%)}
+.book-mount{width:min(1180px,100%);height:calc(100vh - 196px);height:calc(100dvh - 196px);max-height:880px;min-height:390px;position:relative;display:flex;align-items:center;justify-content:center}
+.loading{position:absolute;inset:auto 0 50%;text-align:center;font-style:italic;color:#cfd6cc;margin:0}
+
+/* ---------- Página (común a libro, modo alternativo e impresión) ---------- */
+.page{position:relative;overflow:hidden;background:var(--paper);color:var(--ink);container-type:size}
+.sheet{position:absolute;inset:0;overflow:hidden}
+
+/* Página de texto */
+.text-sheet{padding:7.2cqw 8.6cqw 4.4cqw;display:flex;flex-direction:column;background:var(--paper)}
+.text-sheet:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 88%,rgba(101,77,48,.08))}
+.running-head{flex:none;text-align:center;font-size:2.35cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding-bottom:2cqw;margin-bottom:3.4cqw;border-bottom:1px solid var(--rule);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.opener{flex:none;text-align:center;padding-top:6cqw;margin-bottom:7cqw}
+.opener .ch-num{display:block;font-size:2.7cqw;letter-spacing:.32em;text-transform:uppercase;color:var(--wine)}
+.opener h2{text-wrap:balance;margin:2.6cqw 0 0;font-size:6.6cqw;line-height:1.08;font-weight:500;color:var(--ink)}
+.opener .rule{display:block;margin:4cqw auto 0;width:10cqw;height:1px;background:var(--wine);opacity:.5}
+.prose{flex:1 1 auto;min-height:0;overflow:hidden;font-size:calc(var(--fs,4.15cqw) * var(--fit,1));line-height:1.43;text-align:justify;hyphens:auto;-webkit-hyphens:auto;color:#33281f}
+.prose p{margin:0;text-indent:1.4em}
+.prose p.noindent{text-indent:0}
+.prose p.split{text-align-last:justify}
+.folio{flex:none;height:6.4cqw;display:flex;align-items:flex-end;justify-content:center;position:relative;color:#9b8b73}
+.folio svg{width:7cqw;height:3.3cqw;display:block}
+.folio .num{position:absolute;left:0;bottom:0;font-size:2.7cqw;letter-spacing:.05em;color:var(--muted)}
+
+/* Página ilustrada */
+.plate-sheet{background:var(--paper-2)}
+.plate-sheet.bleed img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.plate-sheet.bleed .ai-credit{color:rgba(255,250,240,.9);text-shadow:0 0 .5em rgba(0,0,0,.75),0 0 .15em rgba(0,0,0,.6)}
+.plate-sheet.mat{display:flex;align-items:center;justify-content:center;padding-bottom:5.5cqw}
+.plate-sheet.mat:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,255,255,.35),transparent 70%);pointer-events:none}
+.frame{position:relative;overflow:hidden;aspect-ratio:var(--ar);background:#d9cdb6;box-shadow:0 .5cqw 2cqw rgba(60,40,20,.25)}
+.frame.whole{width:min(92cqw,calc(90cqh * var(--ar)))}
+.frame img{position:absolute;display:block;max-width:none}
+.frame.whole img{inset:0;width:100%;height:100%}
+.ai-credit{position:absolute;left:6cqw;right:6cqw;bottom:2.6cqw;margin:0;text-align:center;font-size:max(2.2cqw,8.5px);font-style:italic;letter-spacing:.02em;line-height:1.25;color:var(--muted)}
+
+/* Portada */
+.cover-sheet img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* Contraportada exterior: ilustración de la portada sin título ni autores + sinopsis en el cielo, donde la portada lleva el título */
+.backcover-sheet img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.synopsis{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:76cqw;max-height:60cqw;overflow:hidden;padding:4.6cqw 5.4cqw;background:rgba(251,245,233,.35);border:1px solid rgba(102,61,58,.18);border-radius:.6cqw;box-shadow:0 .6cqw 2.4cqw rgba(60,35,20,.18)}
+.synopsis p{margin:0;font-size:calc(3.35cqw * var(--fit,1));line-height:1.48;text-align:justify;hyphens:auto;-webkit-hyphens:auto;color:#1f160f;font-weight:500}
+.backcover-sheet .ai-credit{color:rgba(255,250,240,.9);text-shadow:0 0 .5em rgba(0,0,0,.75),0 0 .15em rgba(0,0,0,.6)}
+/* Guarda en blanco antes de la contraportada */
+.endpaper-sheet{background:var(--paper-2);display:flex;align-items:center;justify-content:center}
+.endpaper-sheet .crosses{width:8cqw;height:3.8cqw;color:#b3a48c;opacity:.6}
+
+/* Páginas preliminares y finales */
+.matter-sheet{padding:11cqw 11cqw 9cqw;display:flex;flex-direction:column;justify-content:center;text-align:center;background:var(--paper);color:#4e3d33}
+.ded-title{margin:0;font-size:5.6cqw;font-weight:500;font-style:italic;color:var(--wine)}
+.ded-names{text-wrap:balance;margin:3cqw 0 6cqw;font-size:3.5cqw;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.matter-sheet .ded-p{margin:0 0 2.6cqw;font-size:3.6cqw;line-height:1.5;font-style:italic}
+.ded-sign{margin:4cqw 0 0;font-size:3.4cqw}
+.ded-sign span{display:block;margin-top:1cqw;font-size:3.6cqw;font-style:normal;color:var(--ink)}
+.toc-sheet{justify-content:flex-start;padding-top:20cqw;text-align:left}
+.toc-title,.credits-title{margin:0 0 9cqw;text-align:center;font-size:6cqw;font-weight:500;color:var(--wine)}
+.toc{list-style:none;margin:0;padding:0}
+.toc li{margin:0 0 4.2cqw}
+.toc button{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:baseline;gap:1.6cqw;cursor:pointer;font-size:3.7cqw;line-height:1.3;color:var(--ink)}
+.toc button:focus-visible{outline:2px solid var(--wine);outline-offset:3px}
+.toc .t{flex:0 1 auto}
+.toc .t b{font-weight:500;color:var(--wine);margin-right:1.4cqw}
+.toc .dots{flex:1 1 auto;border-bottom:1px dotted #a9997f;transform:translateY(-.8cqw);min-width:4cqw}
+.toc .n{flex:none;font-variant-numeric:oldstyle-nums;color:var(--muted)}
+.credits-sheet{justify-content:center}
+.credits-sheet dl{margin:0}
+.credits-sheet dt{margin-top:3.4cqw;font-size:2.4cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.credits-sheet dd{margin:1cqw 0 0;font-size:3.5cqw;line-height:1.4;color:var(--ink)}
+.credits-sheet .crosses{width:9cqw;height:4.2cqw;margin:7cqw auto 0;color:#9b8b73;display:block}
+
+/* ---------- Libro con StPageFlip ---------- */
+.book-mount .stf__parent{margin:0 auto}
+/* Desplazamiento suave para centrar la portada o la contraportada cuando el libro está cerrado */
+.book-mount.stf__parent{transition:transform .45s ease}
+.stf__item{background:var(--paper)}
+
+/* ---------- Modo alternativo (sin la librería de hojas) ---------- */
+.book-mount.fallback{gap:0}
+.book-mount.fallback .page{display:none;flex:none;box-shadow:0 14px 34px rgba(10,18,13,.55)}
+.book-mount.fallback .page.shown{display:block;animation:pageIn .32s ease both}
+.book-mount.fallback .page.shown.back{animation-name:pageInBack}
+.book-mount.fallback .page.shown.left{box-shadow:-8px 14px 34px rgba(10,18,13,.55),inset -10px 0 18px -12px rgba(70,45,20,.35)}
+.book-mount.fallback .page.shown.right{box-shadow:8px 14px 34px rgba(10,18,13,.55),inset 10px 0 18px -12px rgba(70,45,20,.35)}
+@keyframes pageIn{from{opacity:.25;transform:translateX(14px)}to{opacity:1;transform:none}}
+@keyframes pageInBack{from{opacity:.25;transform:translateX(-14px)}to{opacity:1;transform:none}}
+
+/* ---------- Navegación inferior ---------- */
+.pager{display:flex;align-items:center;justify-content:center;gap:22px;padding:8px 12px 12px;background:#232c26}
+/* Barra superior, flechas y pie siempre por encima de las capas del libro. */
+.toolbar,.notice,.pager,.site-footer{position:relative;z-index:30}
+.arrow-btn{border:1px solid #69786e;border-radius:99px;width:48px;height:48px;background:#36473b;color:#fff;font-family:Georgia,serif;font-size:29px;display:flex;justify-content:center;align-items:center;line-height:1;touch-action:manipulation}
+.arrow-btn:disabled{opacity:.3;cursor:default}
+.arrow-btn:hover:not(:disabled){background:#526556}
+.pager-center{width:240px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center}
+.pager-center output{font:500 12px system-ui,sans-serif}
+.pager-center small{font:10px system-ui,sans-serif;color:#b4c0b4}
+.site-footer{padding:0 16px 12px;text-align:center;color:#b2bdb5;font-size:13px;background:#232c26}
+.site-footer span{margin-left:12px;color:#8c9c8f}
+
+/* ---------- Modo lectura ---------- */
+.continuous-stage{width:min(760px,calc(100% - 20px));margin:16px auto 36px;background:var(--paper);color:var(--ink);padding:clamp(20px,6vw,64px);border-radius:3px;box-shadow:0 12px 40px #17231c;outline:none}
+.reading{font-size:clamp(18px,1rem + .45vw,21px);line-height:1.6}
+.reading .r-cover{margin:0 auto 26px;max-width:420px}
+.r-cover img{width:100%;height:auto;display:block;box-shadow:0 8px 26px rgba(40,25,10,.3)}
+.reading h1{text-align:center;color:#673f35;font-weight:600;font-size:clamp(34px,6vw,44px);margin:0}
+.r-sub{text-align:center;font-style:italic;color:#8b796a;margin:.3em 0 .2em}
+.r-authors{text-align:center;letter-spacing:.08em;margin:0 0 2.2em}
+.r-block{border-top:1px solid var(--rule);margin-top:2.2em;padding-top:1.6em}
+.r-dedication{text-align:center}
+.r-dedication .ded-title{font-size:1.5em}
+.r-dedication .ded-names{font-size:.85em;margin:.6em 0 1.4em}
+.r-dedication p{font-style:italic;margin:0 0 .8em}
+.r-toc ol{list-style:none;padding:0;margin:0}
+.r-toc li{margin:.35em 0}
+.r-toc button{all:unset;cursor:pointer;color:var(--wine);text-decoration:underline;text-decoration-color:rgba(102,61,58,.35);text-underline-offset:3px}
+.r-toc button:focus-visible{outline:2px solid var(--wine)}
+.reading h2{font-size:1.45em;font-weight:500;color:#754a3c;margin:2.4em 0 1em;text-align:center;line-height:1.15}
+.reading h2 span{display:block;font-size:.5em;letter-spacing:.3em;text-transform:uppercase;color:var(--wine);margin-bottom:.5em}
+.r-chapter p{margin:0;text-indent:1.4em;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.r-chapter h2+p,.r-chapter figure+p{text-indent:0}
+.reading figure{margin:1.6em 0;text-align:center}
+.reading figure img{max-width:100%;height:auto;max-height:80vh;display:inline-block;box-shadow:0 6px 22px rgba(40,25,10,.25)}
+.reading figcaption{font-size:.72em;font-style:italic;color:var(--muted);margin-top:.5em}
+.r-credits dl{margin:0;text-align:center}
+.r-credits dt{font-size:.7em;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:1em}
+.r-credits dd{margin:.2em 0 0}
+
+/* ---------- Pantallas pequeñas ---------- */
+@media (max-width:700px){
+  .toolbar{padding:8px 10px;gap:8px}
+  .eyebrow{display:none}
+  .brand strong{font-size:19px}
+  .plain-btn{padding:6px 9px;font-size:11px}
+  .flip-stage{padding:8px 4px 6px}
+  .book-mount{height:calc(100vh - 136px);height:calc(100dvh - 136px);min-height:330px}
+  .pager{gap:12px;padding:6px 8px 8px}
+  .pager-center{width:170px}
+  .pager-center small{font-size:9px}
+  .site-footer{display:none}
+}
+@media (max-width:480px){
+  .lbl-long{display:none}
+  .lbl-short{display:inline}
+  .toolbar-actions{flex-wrap:nowrap;gap:6px}
+  .brand strong{font-size:18px;white-space:nowrap}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:0s!important;transition-duration:0s!important}
+}
+
+/* ---------- Vista de impresión / Guardar PDF ----------
+   Cada página del libro ocupa una hoja de 148 × 222 mm (proporción 2:3). */
+.print-stage{position:absolute;left:-30000px;top:0;visibility:hidden;pointer-events:none}
+.print-stage .page{width:148mm;height:222mm}
+@page{size:148mm 222mm;margin:0}
+@media print{
+  html,body{background:#fff!important}
+  .reader-shell{display:none!important}
+  .print-stage{position:static;visibility:visible;display:block}
+  .print-stage .page{break-after:page;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .print-stage .page:last-child{break-after:auto;page-break-after:auto}
+  .frame,.plate-sheet.mat:before{box-shadow:none}
+}

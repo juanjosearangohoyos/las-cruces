@@ -1,0 +1,77 @@
+/* ===== V6: correcciones finas (se carga al final) ===== */
+.aviso-tag{display:inline-block;font:800 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#0c100e!important;background:var(--amber);padding:3px 8px;margin-right:8px;vertical-align:1px}
+/* ficha técnica: cinco departamentos sin celdas vacías */
+.crew-grid{grid-template-columns:repeat(3,1fr)}
+.dept{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.dept:nth-child(3n),.dept:nth-child(5){border-right:0}
+.dept:nth-child(4),.dept:nth-child(5){border-bottom:0}
+.dept:nth-child(5){grid-column:span 2}
+@media(max-width:1000px){
+  .crew-grid{grid-template-columns:1fr 1fr}
+  .dept,.dept:nth-child(3n){border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .dept:nth-child(2n),.dept:nth-child(5){border-right:0}
+  .dept:nth-child(4){border-bottom:1px solid var(--line)}.dept:nth-child(5){border-bottom:0}
+}
+@media(max-width:760px){.crew-grid{grid-template-columns:1fr}.dept,.dept:nth-child(n){border-right:0;border-bottom:1px solid var(--line);grid-column:auto}.dept:nth-child(5){border-bottom:0}}
+/* merch más ordenado: columnas según las fotos de cada familia */
+.gallery.merch{grid-template-columns:repeat(var(--cols,4),minmax(0,1fr));max-width:calc(var(--cols,4) * 25%)}
+.family{padding-top:6px;border-top:1px solid var(--line)}
+.packs,.wall-wrap{padding-top:10px;border-top:1px solid var(--line)}
+@media(max-width:1000px){.gallery.merch{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none}}
+@media(max-width:480px){.gallery.merch{grid-template-columns:1fr 1fr}}
+/* modo simple: lectura limpia, evidente a simple vista */
+.simple-bar{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff;color:#000;padding:12px var(--pad);font:600 15px/1.5 Arial,Helvetica,sans-serif}
+.simple-bar[hidden]{display:none}.simple-bar p{margin:0}.simple-bar .btn{border-color:#000;color:#000;box-shadow:none}
+html.simple{--bg:#000;--surface:#0d0d0d;--bone:#fff;--muted:#e0e0e0;--line:#8a8a8a;--amber:#ffd27a}
+html.simple body{background:#000;color:#fff;font:19px/1.85 Arial,Helvetica,sans-serif}
+html.simple h1,html.simple h2,html.simple h3,html.simple .lead,html.simple .hook,html.simple .hook-lead,html.simple .subtitle,html.simple .cr-names,html.simple .facts dd,html.simple .dept dd,html.simple .cta-link,html.simple .obj-nav a,html.simple .syn p,html.simple .lead-sm{font-family:Arial,Helvetica,sans-serif;font-style:normal;letter-spacing:0}
+html.simple em{color:#fff;font-style:normal;text-decoration:underline}
+html.simple .hero .visual,html.simple .obj .art,html.simple .footer .foot-cross,html.simple .micro.eyebrow:before{display:none}
+html.simple .hero{min-height:0;padding:56px var(--pad);background:#000}
+html.simple .section,html.simple .section.alt{background:#000;border-top:2px solid #444}
+html.simple .obj-grid .obj,html.simple .obj-grid .obj:nth-child(n){grid-column:1/-1;margin-top:0;border:2px solid #fff;background:#000}
+html.simple .obj-body{background:#000;padding:20px 24px}
+html.simple .obj-body h3{font-size:28px}
+html.simple .obj-body .go{color:#ffd27a;font-size:15px}
+html.simple a{text-decoration:underline;text-underline-offset:4px}
+html.simple .btn,html.simple .btn.primary{clip-path:none;background:#000;color:#fff;border:2px solid #fff;font-size:15px;letter-spacing:0;text-transform:none;padding:14px 22px}
+html.simple .btn.primary{background:#fff;color:#000}
+html.simple .btn:hover{background:#333;color:#fff;transform:none}
+html.simple .btn.primary:hover{background:#ddd;color:#000}
+html.simple .archive-controls a,html.simple .tool,html.simple .tabs button{font-size:15px;letter-spacing:0;text-transform:none;border:2px solid #fff;background:#000;color:#fff}
+html.simple .archive-controls a[aria-current=true],html.simple .tool[aria-pressed=true],html.simple .tabs button[aria-pressed=true]{background:#fff;color:#000}
+html.simple .site-header,html.simple .player{background:#000;border-color:#fff}
+html.simple .header-nav a,html.simple .brand{font-size:13px}
+html.simple .micro,html.simple .card-type,html.simple .facts dt,html.simple .dept h3,html.simple .family-k{color:#ffd27a;font-size:13px;letter-spacing:.06em}
+html.simple .piece-note,html.simple .facts dd,html.simple .bodycopy,html.simple .syn p,html.simple .find{font-size:18px;color:#fff;max-width:68ch}
+html.simple .lay-story .obj-cover,html.simple .gallery.posters .poster-fig>button{border:0;transform:none;box-shadow:none;background:#000}
+html.simple .gallery.posters{background:#000;border:0;padding:0}
+html.simple .cta,html.simple .crew,html.simple .pack,html.simple .pending-box{background:#000;border:2px solid #fff}
+html.simple .cta-link{font-size:28px}
+html.simple .footer{background:#000;border-top:2px solid #fff}
+html.simple .hook-lead{border-left:4px solid #fff}
+html.simple .aviso-tag{background:#fff;color:#000!important}
+html.simple #simpleBtn{background:#fff;color:#000;border-color:#fff;font-weight:800}
+.cta .also{display:block;width:fit-content;margin-top:22px;font-size:13px}
+.cta .also:before{content:none}
+html.simple .obj-body .hook,html.simple .obj-body p{font-size:18px;line-height:1.7;color:#fff}html.simple .obj-body .go{font-size:16px}
+
+/* stickers: bloque inicial integrado */
+.obj-hero.merge{align-items:stretch;gap:clamp(24px,4vw,56px);margin-bottom:34px}
+.obj-hero.merge .obj-cover{align-self:stretch;display:flex;min-height:0;margin-top:0}
+.obj-hero.merge .obj-cover img{width:100%;height:100%;max-height:none;object-fit:cover}
+.obj-hero.merge .syn.tight{margin:0 0 22px;max-width:none}
+.obj-hero.merge .syn.tight p{font-size:16px;line-height:1.75;margin:0}
+.obj-hero.merge .hook-lead{margin-bottom:18px}
+.obj-hero.merge .facts{padding-top:18px}
+@media(max-width:760px){.obj-hero.merge .obj-cover{display:block}.obj-hero.merge .obj-cover img{height:auto}}
+
+/* «Qué vas a encontrar»: etiqueta de acento y párrafo equilibrado en todas las páginas */
+.find{margin:0 0 24px;max-width:58ch;font-size:16px;line-height:1.75;color:#dfe3d6;text-align:justify;hyphens:auto}
+.find strong{display:block;font:800 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.obj-hero.merge .hook-lead{margin-bottom:20px}
+.obj-hero.merge .facts{margin-top:0}
+.obj-hero.merge.keep .obj-cover{align-self:start}
+.obj-hero.merge.keep .obj-cover img{height:auto;object-fit:contain}
+@media(max-width:480px){.find{text-align:left;hyphens:manual}}
+html.simple .find{font-size:18px;color:#fff}

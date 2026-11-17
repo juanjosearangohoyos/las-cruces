@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#242b25" />
+  <title>El primer pacto · Cuento digital</title>
+  <meta name="description" content="Un cuento de Juan José Arango y Carlos Escobar, del universo transmedia Las cruces que cargamos." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="reader-shell" id="readerShell">
+    <header class="toolbar" aria-label="Controles del lector">
+      <div class="brand">
+        <span class="eyebrow">LAS CRUCES QUE CARGAMOS · CUENTO DIGITAL</span>
+        <strong>El primer pacto</strong>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" id="switchMode" class="plain-btn" aria-pressed="false"><span class="lbl-long">Modo lectura</span><span class="lbl-short">Lectura</span></button>
+        <button type="button" id="goCover" class="plain-btn" title="Volver a la portada del libro">Portada</button>
+        <button type="button" id="savePdf" class="plain-btn" title="Abre la vista de impresión para guardar el libro como PDF"><span class="lbl-long">Guardar PDF</span><span class="lbl-short">PDF</span></button>
+      </div>
+    </header>
+    <p class="notice" id="notice" role="status" hidden></p>
+
+    <main>
+      <section id="flipStage" class="flip-stage" aria-label="Libro ilustrado interactivo">
+        <div class="book-mount" id="book" aria-label="Páginas del cuento"></div>
+        <p class="loading" id="loading">Preparando el libro…</p>
+      </section>
+      <section id="continuousStage" class="continuous-stage" hidden aria-label="Lectura continua del cuento" tabindex="-1"></section>
+    </main>
+
+    <nav class="pager" id="pager" aria-label="Navegación del cuento">
+      <button id="prevPage" type="button" class="arrow-btn" aria-label="Página anterior" disabled><span aria-hidden="true">‹</span></button>
+      <div class="pager-center"><output id="pageStatus" aria-live="polite">Portada</output><small>Toca o arrastra la hoja, o usa las flechas</small></div>
+      <button id="nextPage" type="button" class="arrow-btn" aria-label="Página siguiente" disabled><span aria-hidden="true">›</span></button>
+    </nav>
+    <footer class="site-footer">Juan José Arango · Carlos Escobar <span>Una expansión de <em>Las cruces que cargamos</em></span></footer>
+  </div>
+
+  <!-- Vista de impresión: se construye al pulsar «Guardar PDF» y solo se ve al imprimir. -->
+  <div id="printStage" class="print-stage" aria-hidden="true"></div>
+
+  <script src="contenido/contenido.js"></script>
+  <!-- Efecto de hoja (StPageFlip, MIT) desde CDN. Si no carga, el lector usa su modo alternativo con la misma navegación. -->
+  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
