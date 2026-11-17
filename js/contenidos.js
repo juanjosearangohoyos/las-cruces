@@ -28,7 +28,6 @@ window.SITE = {
   merchFamilies: [
     { id: 'cruces', title: 'Las Tres Cruces', shape: 'Sticker circular', desc: 'Un círculo azul con tres cruces blancas sobre un cerro verde, nubes y una figura alada de cuernos rojos que se asoma por detrás.', photos: [2, 3, 4, 1] },
     { id: 'baile', title: 'El baile', shape: 'Sticker rectangular', desc: 'Sobre fondo azul, unas piernas con tacones rojos bailan junto a unas patas peludas con pezuñas, entre notas musicales.', photos: [5, 6, 8] },
-    { id: 'juntos', title: 'Los dos diseños juntos', shape: 'Dos stickers', desc: 'El sticker rectangular y el circular fotografiados uno junto al otro.', photos: [7] }
   ],
   merchPhotos: {
     1: 'Cuatro stickers circulares en fila sobre fondo claro', 2: 'Un sticker circular sobre fondo claro', 3: 'Un sticker circular sobre fondo oscuro', 4: 'Tres stickers circulares en fila',
@@ -128,8 +127,8 @@ window.SITE = {
       hook: 'Dos diseños para pegar donde quieras.',
       mergeSyn: true, find: 'Dos diseños de stickers inspirados en las Tres Cruces y el Buziraco, una galería de fotografías que puedes ampliar y descargar, y un muro interactivo para crear tu propia composición.',
       synopsis: 'Esta colección reúne dos diseños de stickers inspirados en las Tres Cruces y en los símbolos de la historia. Incluye una galería de fotografías para ampliar y descargar, y un muro interactivo donde puedes crear tu propia composición.',
-      format: 'Dos diseños, ocho fotografías y un muro interactivo', state: 'Disponible para ver', cta: 'Ver los diseños', pieceTitle: 'Los dos diseños en fotografías', lupa: true,
-      downloads: [['Las ocho fotografías en ZIP', 'descargas/stickers/Stickers-Las-cruces-que-cargamos.zip', 'Stickers-Las-cruces-que-cargamos.zip', '4 MB']],
+      format: 'Dos diseños, siete fotografías y un muro interactivo', state: 'Disponible para ver', cta: 'Ver los diseños', pieceTitle: 'Los dos diseños en fotografías', lupa: true,
+      downloads: [['Las fotografías en ZIP', 'descargas/stickers/Stickers-Las-cruces-que-cargamos.zip', 'Stickers-Las-cruces-que-cargamos.zip', '4 MB']],
       next: { to: 'playlist', label: 'Descubre los sonidos de Cali' } },
     { key: 'playlist', group: 'detras', layout: 'story', num: '10', type: 'Playlist', title: 'Playlist del Buziraco', kind: 'playlist', cover: 'assets/portadas/playlist.webp', pos: '50% 50%', fit: 'contain', w: 4, h: 340, team: 'album',
       sub: 'La música que acompaña al universo del Buziraco.',

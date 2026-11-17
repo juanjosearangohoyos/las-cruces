@@ -75,3 +75,9 @@ html.simple .obj-body .hook,html.simple .obj-body p{font-size:18px;line-height:1
 .obj-hero.merge.keep .obj-cover img{height:auto;object-fit:contain}
 @media(max-width:480px){.find{text-align:left;hyphens:manual}}
 html.simple .find{font-size:18px;color:#fff}
+
+/* sticker «El baile» completo: nunca se recorta */
+.stk.rect{aspect-ratio:2.02;border-radius:0}.stk.rect img{object-fit:contain;border-radius:0}
+.pack .pack-img{display:flex;gap:10px;align-items:center;height:120px}.pack .pack-img img{height:100%;width:auto;max-width:48%;object-fit:contain}
+.pack .pack-img img:only-child{max-width:100%}
+.pal img{object-fit:contain}

@@ -209,11 +209,11 @@
     var sec = el('section', { 'class': 'packs' }, [el('h2', { 'class': 'sub', text: 'Colecciones' }),
       el('p', { 'class': 'piece-note just', text: 'Los dos diseños se agrupan en tres colecciones. Por ahora se disfrutan como galería visual y como descarga. Si te interesa tener alguno, deja constancia con el botón de cada colección.' })]);
     var grid = el('div', { 'class': 'pack-grid' }), msg = el('p', { 'class': 'pack-msg', role: 'status', 'aria-live': 'polite' });
-    [['Colección Las Tres Cruces', 'El sticker circular con las tres cruces y la figura alada.', 'assets/merch/sticker-cut.webp'], ['Colección El baile', 'El sticker rectangular con los tacones rojos y las patas con pezuñas.', 'assets/merch/sticker-rect-cut.webp'], ['Pack de los dos diseños', 'Un sticker circular y uno rectangular, como en la fotografía de la colección.', 'assets/merch/sticker-7-thumb.webp']].forEach(function (p) {
+    [['Colección Las Tres Cruces', 'El sticker circular con las tres cruces y la figura alada.', 'assets/merch/sticker-cut.webp'], ['Colección El baile', 'El sticker rectangular con los tacones rojos y las patas con pezuñas.', 'assets/merch/sticker-rect-cut.webp'], ['Pack de los dos diseños', 'Un sticker circular y uno rectangular, cada uno con su diseño completo.', ['assets/merch/sticker-cut.webp', 'assets/merch/sticker-rect-cut.webp']]].forEach(function (p) {
       var act;
       if (S.contact) act = el('a', { 'class': 'btn', href: S.contact, text: 'Consultar disponibilidad' });
       else { act = el('button', { type: 'button', 'class': 'btn', text: 'Me interesa esta colección' }); act.addEventListener('click', function () { msg.textContent = 'Gracias por tu interés en «' + p[0] + '». Esta web aún no tiene un canal para pedir los stickers, así que este botón no envía datos. Cuando el equipo habilite una forma de contacto, aparecerá aquí.'; }); }
-      grid.appendChild(el('div', { 'class': 'pack' }, [el('img', { src: p[2], alt: '', loading: 'lazy' }), el('h3', { text: p[0] }), el('p', { text: p[1] }), act]));
+      grid.appendChild(el('div', { 'class': 'pack' }, [el('div', { 'class': 'pack-img' }, [].concat(p[2]).map(function (s) { return el('img', { src: s, alt: '', loading: 'lazy' }); })), el('h3', { text: p[0] }), el('p', { text: p[1] }), act]));
     });
     sec.appendChild(grid); sec.appendChild(msg); return sec;
   }
