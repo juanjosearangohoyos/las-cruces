@@ -17,6 +17,25 @@
   function names(it) { return it.team ? S.teams[it.team].names : it.teamText; }
   function href(to) { return to.charAt(0) === '/' ? '#' + to : '#/objeto/' + to; }
 
+  /* ---------- Recorrido progresivo: piezas visitadas en esta sesión (solo sessionStorage, sin datos personales) ---------- */
+  var seen = [];
+  try { seen = JSON.parse(sessionStorage.getItem('seen') || '[]').filter(function (k) { return byKey[k]; }); } catch (e) { seen = []; }
+  function markSeen(k) {
+    if (seen.indexOf(k) >= 0) return; seen.push(k);
+    try { sessionStorage.setItem('seen', JSON.stringify(seen)); } catch (e) { /* shortcut: sin almacenamiento el avance vive solo mientras la página siga abierta */ }
+  }
+  // Primero la siguiente pieza sin visitar en el orden narrativo; si no queda ninguna posterior, la primera pendiente anterior; si no hay, null.
+  function nextPiece(k) {
+    var i = order.indexOf(k), pend = order.filter(function (x) { return seen.indexOf(x) < 0; });
+    return pend.filter(function (x) { return order.indexOf(x) > i; })[0] || pend[0] || null;
+  }
+  function ctaBlock(it) {
+    var n = nextPiece(it.key), N = order.length;
+    if (!n) return '<div class="cta done"><p class="micro">Recorrido completo · ' + N + ' de ' + N + '</p><p class="cta-done">Has recorrido las diez piezas del universo.</p>' +
+      '<p class="piece-note">Si quieres volver a alguna, el archivo está abierto para explorar libremente.</p><div class="actions"><a class="btn" href="#/archivo">Explorar el archivo</a><a class="btn" href="#/creditos">Ver los créditos</a></div></div>';
+    return '<div class="cta"><p class="micro">Sigue por aquí · ' + seen.length + ' de ' + N + ' piezas recorridas</p><a class="cta-link" href="' + href(n) + '">' + byKey[n].lead + '</a></div>';
+  }
+
   /* ---------- Modo simple ---------- */
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, simpleBtn = $('#simpleBtn'), live = $('#liveMsg');
   function setSimple(on, say) {
@@ -122,15 +141,18 @@
   function noteAviso(text) { var p = el('p', { 'class': 'piece-note' }); p.appendChild(el('strong', { 'class': 'aviso-tag', text: 'Aviso' })); p.appendChild(document.createTextNode(' ' + text)); return p; }
   function plCover() {
     return el('div', { 'class': 'pl-cover', role: 'img', 'aria-label': 'Portada editorial de la playlist con las tres cruces, un sticker del universo y el título Playlist del Buziraco' }, [
-      el('img', { 'class': 'pl-bg', src: 'assets/portadas/hero.webp', alt: '', 'aria-hidden': 'true' }), el('div', { 'class': 'pl-shade', 'aria-hidden': 'true' }),
+      el('img', { 'class': 'pl-bg', src: 'assets/portadas/hero-cruces.webp', alt: '', 'aria-hidden': 'true' }), el('div', { 'class': 'pl-shade', 'aria-hidden': 'true' }),
       el('img', { 'class': 'pl-sticker', src: S.stickersWall[0].src, alt: '', 'aria-hidden': 'true' }),
       el('div', { 'class': 'pl-text', 'aria-hidden': 'true' }, [el('span', { 'class': 'pl-k', text: 'Playlist' }), el('strong', { text: 'del Buziraco' }), el('span', { 'class': 'pl-s', text: 'Salsa y otros ritmos de Cali' })])]);
   }
 
   function pieceYT(it) {
     var y = S.yt[it.yt], w = el('div');
-    w.appendChild(facade(y.title, it.key === 'bts' ? 'Ver el rodaje' : 'Dale play', y.thumb, function () { return frame(ytSrc('video', y.id), y.title); }, it.film));
-    w.appendChild(el('div', { 'class': 'piece-links' }, [ext(y.url, 'Verlo en YouTube'), el('span', { 'class': 'piece-note', text: 'Si no carga aquí, ábrelo directamente en YouTube.' })]));
+    // El póster es vertical: se muestra completo, sobre su propio reflejo desenfocado, sin recortar títulos ni créditos
+    var thumb = it.trailer ? el('div', { 'class': 'poster-thumb', 'aria-hidden': 'true' }, [el('img', { 'class': 'pt-bg', src: y.thumb, alt: '' }), el('img', { 'class': 'pt-fg', src: y.thumb, alt: '' })]) : y.thumb;
+    w.appendChild(facade(y.title, it.trailer ? 'Ver el tráiler' : it.key === 'bts' ? 'Ver el rodaje' : 'Dale play', thumb, function () { return frame(ytSrc('video', y.id), y.title); }, it.film));
+    w.appendChild(el('div', { 'class': 'piece-links' }, [ext(y.url, it.trailer ? 'Ver el tráiler en YouTube' : 'Verlo en YouTube'), el('span', { 'class': 'piece-note', text: 'Si no carga aquí, ábrelo directamente en YouTube.' })]));
+    if (it.trailer) w.appendChild(el('p', { 'class': 'piece-note' }, [el('strong', { text: 'Tráiler oficial disponible. Cortometraje completo pendiente de estreno.' })]));
     return w;
   }
   function piecePlaylist() {
@@ -155,11 +177,6 @@
     var a = it.app, b = el('button', { type: 'button', 'class': 'btn primary', text: a.open });
     b.addEventListener('click', function () { openReader(a); });
     return el('div', {}, [el('div', { 'class': 'actions' }, [b, ext(a.src, 'Abrir en otra pestaña')]), el('p', { 'class': 'piece-note', text: a.note })]);
-  }
-  function piecePending() {
-    return el('div', { 'class': 'pending-box' }, [el('strong', { text: 'Próximamente' }),
-      el('span', { text: 'El cortometraje todavía no se ha publicado. Cuando esté listo, podrás verlo en este mismo lugar.' }),
-      el('div', { 'class': 'actions center' }, [el('a', { 'class': 'btn primary', href: '#/objeto/ebook', text: 'Conoce a Lucas antes del cortometraje' }), el('a', { 'class': 'btn', href: '#/objeto/bts', text: 'Conoce cómo se hizo' })])]);
   }
   function piecePosters(it) {
     var list = S.posters, wrap = el('div'), g = el('div', { 'class': 'gallery posters' });
@@ -186,7 +203,7 @@
     return w;
   }
 
-  /* Merchandising: familias de diseño, fotografías ampliables, packs y muro */
+  /* Merchandising: familias de diseño, fotografías ampliables y muro */
   function pieceMerch() {
     var w = el('div'), host = el('div', { 'class': 'merch-host' });
     S.merchFamilies.forEach(function (f) {
@@ -201,22 +218,10 @@
     });
     w.appendChild(addLupa(host)); w.appendChild(host);
     w.appendChild(pieceAttrib('Fotografías y diseños de ' + S.teams.found.names + '.'));
-    w.appendChild(packs()); w.appendChild(pieceWall());
+    w.appendChild(pieceWall());
     return w;
   }
   function pieceAttrib(t) { return el('p', { 'class': 'piece-note', text: t }); }
-  function packs() {
-    var sec = el('section', { 'class': 'packs' }, [el('h2', { 'class': 'sub', text: 'Colecciones' }),
-      el('p', { 'class': 'piece-note just', text: 'Los dos diseños se agrupan en tres colecciones. Por ahora se disfrutan como galería visual y como descarga. Si te interesa tener alguno, deja constancia con el botón de cada colección.' })]);
-    var grid = el('div', { 'class': 'pack-grid' }), msg = el('p', { 'class': 'pack-msg', role: 'status', 'aria-live': 'polite' });
-    [['Colección Las Tres Cruces', 'El sticker circular con las tres cruces y la figura alada.', 'assets/merch/sticker-cut.webp'], ['Colección El baile', 'El sticker rectangular con los tacones rojos y las patas con pezuñas.', 'assets/merch/sticker-rect-cut.webp'], ['Pack de los dos diseños', 'Un sticker circular y uno rectangular, cada uno con su diseño completo.', ['assets/merch/sticker-cut.webp', 'assets/merch/sticker-rect-cut.webp']]].forEach(function (p) {
-      var act;
-      if (S.contact) act = el('a', { 'class': 'btn', href: S.contact, text: 'Consultar disponibilidad' });
-      else { act = el('button', { type: 'button', 'class': 'btn', text: 'Me interesa esta colección' }); act.addEventListener('click', function () { msg.textContent = 'Gracias por tu interés en «' + p[0] + '». Esta web aún no tiene un canal para pedir los stickers, así que este botón no envía datos. Cuando el equipo habilite una forma de contacto, aparecerá aquí.'; }); }
-      grid.appendChild(el('div', { 'class': 'pack' }, [el('div', { 'class': 'pack-img' }, [].concat(p[2]).map(function (s) { return el('img', { src: s, alt: '', loading: 'lazy' }); })), el('h3', { text: p[0] }), el('p', { text: p[1] }), act]));
-    });
-    sec.appendChild(grid); sec.appendChild(msg); return sec;
-  }
   /* Muro: elegir diseño, añadir, mover (puntero o dedo), girar, duplicar, eliminar, limpiar y guardar imagen */
   function pieceWall() {
     var w = el('div', { 'class': 'wall-wrap' }), board = el('div', { 'class': 'board', role: 'group', 'aria-label': 'Muro de stickers', tabindex: '-1' });
@@ -254,7 +259,7 @@
     function clear() { board.querySelectorAll('.stk').forEach(function (s) { s.remove(); }); n = 0; select(null); }
     function save() {
       var sc = 2, c = document.createElement('canvas'); c.width = board.clientWidth * sc; c.height = board.clientHeight * sc; var x = c.getContext('2d');
-      var g = x.createLinearGradient(0, 0, c.width, c.height); g.addColorStop(0, '#2a2f2c'); g.addColorStop(1, '#1b201d'); x.fillStyle = g; x.fillRect(0, 0, c.width, c.height);
+      var g = x.createLinearGradient(0, 0, c.width, c.height); g.addColorStop(0, '#2a1f2e'); g.addColorStop(1, '#1b1220'); x.fillStyle = g; x.fillRect(0, 0, c.width, c.height);
       [].slice.call(board.querySelectorAll('.stk')).forEach(function (s) {
         var im = s.querySelector('img'), cx = (s.offsetLeft + s.offsetWidth / 2) * sc, cy = (s.offsetTop + s.offsetHeight / 2) * sc;
         x.save(); x.translate(cx, cy); x.rotate(+s.dataset.rot * Math.PI / 180); x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = 10 * sc; x.drawImage(im, -s.offsetWidth * sc / 2, -s.offsetHeight * sc / 2, s.offsetWidth * sc, s.offsetHeight * sc); x.restore();
@@ -276,7 +281,7 @@
   function piece(it) {
     var k = it.kind;
     if (k === 'yt') return pieceYT(it); if (k === 'video') return pieceVideo(it); if (k === 'app') return pieceApp(it);
-    if (k === 'pending') return piecePending(); if (k === 'gallery') return piecePosters(it); if (k === 'album') return pieceAlbum();
+    if (k === 'gallery') return piecePosters(it); if (k === 'album') return pieceAlbum();
     if (k === 'playlist') return piecePlaylist(); if (k === 'merch') return pieceMerch();
     return el('div');
   }
@@ -302,20 +307,27 @@
     if (it.playlistCover) art.appendChild(plCover());
     else if (it.fit === 'contain') { art.appendChild(el('img', { 'class': 'bg', src: it.cover, alt: '', loading: 'lazy', 'aria-hidden': 'true' })); art.appendChild(el('img', { 'class': 'fg', src: it.cover, alt: '', loading: 'lazy', decoding: 'async' })); }
     else if (it.cover) art.appendChild(el('img', { src: it.cover, alt: '', loading: 'lazy', decoding: 'async', style: 'object-position:' + it.pos }));
-    var row = el('div', { 'class': 'row' }, [el('span', { 'class': 'card-type', text: it.type }), el('span', { 'class': it.kind === 'pending' ? 'chip' : 'n', text: it.kind === 'pending' ? 'Próximamente' : it.num })]);
+    var row = el('div', { 'class': 'row' }, [el('span', { 'class': 'card-type', text: it.type }), el('span', { 'class': 'n', text: it.num })]);
     return el('article', { 'class': 'obj', 'data-group': it.group, style: '--w:' + it.w + ';--h:' + it.h + 'px' }, [art,
       el('div', { 'class': 'obj-body' }, [row, el('h3', {}, [el('a', { href: '#/objeto/' + it.key, text: it.title })]), el('p', { 'class': 'hook', text: it.hook }), el('span', { 'class': 'go', 'aria-hidden': 'true', text: it.cta })])]);
   }
   var views = {};
+  // Leyenda tradicional: contexto para quien no la conoce, separando tradición oral, monumento y ficción del proyecto
+  function legend() {
+    return '<div class="legend"><h3 class="legend-h">La leyenda tradicional</h3>' +
+      '<p class="bodycopy just">Según una antigua leyenda caleña, el Buziraco era una presencia demoníaca a la que se atribuían las desgracias que azotaban a la ciudad: epidemias, inundaciones, discordias y otros males. Para detenerlo, cuenta la tradición que se levantaron tres cruces sobre el cerro, como símbolo de protección.</p>' +
+      '<p class="bodycopy just">Algunas versiones sostienen que el Buziraco quedó encerrado bajo las cruces y que su amenaza nunca desapareció del todo. La historia ha pasado de generación en generación y cambia según quien la cuente, incluso en fechas y detalles.</p>' +
+      '<p class="bodycopy just legend-note"><strong>Tradición, monumento y ficción.</strong> La leyenda pertenece a la tradición oral. Las Tres Cruces son un monumento real de Cali y un lugar de peregrinación. Lo que ocurre en nuestras piezas, con Lucas, Elvira y los demás personajes, es una ficción creada por este proyecto. Para conocer el lugar, puedes consultar la <a href="https://www.cali.gov.co/turista/publicaciones/1388/las-tres-cruces/" target="_blank" rel="noopener noreferrer">página de la Alcaldía de Cali</a>.</p></div>';
+  }
   views.home = function () {
     var d = el('div');
-    d.innerHTML = '<section class="hero"><div class="visual" aria-hidden="true"><img src="assets/portadas/hero.webp" alt="" fetchpriority="high" decoding="async"><div class="shadow"></div></div>' +
+    d.innerHTML = '<section class="hero"><div class="visual" aria-hidden="true"><img src="assets/portadas/hero-cruces.webp" alt="" fetchpriority="high" decoding="async"><div class="shadow"></div></div>' +
       '<div class="hero-content"><p class="kicker micro">Una ficción de Cali</p><h1>Las cruces<br>que <em>cargamos</em></h1>' +
       '<p class="hero-summary">Desde la ciudad se ven tres cruces sobre el cerro. Lo que se cuenta de ellas cambia con cada voz. Aquí encuentras un cuento, un cómic, un pódcast, una grabación, música y objetos del universo del Buziraco.</p>' +
       '<div class="actions"><a class="btn primary arr" href="#/archivo">Abrir el archivo</a><a class="btn" href="#/universo">Conocer la leyenda</a></div>' +
-      '<p class="status">El cortometraje todavía no se estrena</p></div></section>' +
+      '<p class="status">Tráiler oficial disponible · Cortometraje completo pendiente de estreno</p></div></section>' +
       '<section class="section"><div class="wrap narrow"><p class="micro eyebrow">La leyenda</p><h2>Sobre el cerro, <em>tres cruces</em></h2><p class="lead">Bajo la rutina de Cali hay una historia que cambia con cada voz.</p>' +
-      '<p class="bodycopy just">El Buziraco es una figura del folclore caleño y las Tres Cruces son el monumento que vigila la ciudad. Con ambos, varios equipos construyeron una ficción de terror. Hay un libro que empieza en la voz de una abuela, un pódcast con alguien que no sabe explicar lo que vivió, una grabación de tres amigas en un parque, un cómic, una suite musical y unos cuantos objetos. Puedes entrar por la pieza que quieras.</p></div></section>' +
+      '<p class="bodycopy just">El Buziraco es una figura del folclore caleño y las Tres Cruces son el monumento que vigila la ciudad. Con ambos, varios equipos construyeron una ficción de terror. Hay un libro que empieza en la voz de una abuela, un pódcast con alguien que no sabe explicar lo que vivió, una grabación de tres amigas en un parque, un cómic, una suite musical y unos cuantos objetos. Puedes entrar por la pieza que quieras.</p>' + legend() + '</div></section>' +
       '<section class="section alt"><div class="wrap"><p class="micro eyebrow">Cuatro piezas para entrar</p><h2>Por dónde <em>empezar</em></h2><div class="obj-grid" id="featGrid"></div>' +
       '<p class="center-link"><a class="btn arr" href="#/archivo">Ver las diez piezas</a></p></div></section>';
     var g = d.querySelector('#featGrid'); ['corto', 'ebook', 'album', 'comic'].forEach(function (k) { var c = card(byKey[k]); c.style.setProperty('--w', 6); c.style.setProperty('--h', '320px'); g.appendChild(c); });
@@ -337,7 +349,7 @@
   views.universo = function () {
     var d = el('div'); d.innerHTML = '<section class="section"><div class="wrap"><p class="micro eyebrow">El universo</p><h1 class="h-xl">La leyenda <em>persiste</em></h1><div class="intro-grid"><div>' +
       '<p class="lead">Sobre el cerro, tres cruces. Bajo la rutina de Cali, una historia que cambia con cada voz.</p>' +
-      '<p class="bodycopy just">Todo parte del mito caleño del Buziraco y de las Tres Cruces. De ahí nace una ficción de terror urbano donde caben la fe, la memoria oral, la vida cotidiana y esas cosas que nadie sabe explicar del todo. Lo que ves aquí es una obra inventada, no un documento histórico, y cada pieza la cuenta a su manera.</p>' +
+      '<p class="bodycopy just">Todo parte del mito caleño del Buziraco y de las Tres Cruces. De ahí nace una ficción de terror urbano donde caben la fe, la memoria oral, la vida cotidiana y esas cosas que nadie sabe explicar del todo. Lo que ves aquí es una obra inventada, no un documento histórico, y cada pieza la cuenta a su manera.</p>' + legend() +
       '<div class="actions"><a class="btn primary arr" href="#/archivo">Abrir el archivo</a></div></div>' +
       '<dl class="facts side"><dt>Obra central</dt><dd>Las cruces que cargamos</dd><dt>Género</dt><dd>Terror sobrenatural y folclore urbano</dd><dt>Para recorrer</dt><dd>Un libro, un pódcast, un metraje, un cómic, una suite y objetos del universo</dd><dt>Cómo</dt><dd>En el orden que quieras</dd></dl></div></div></section>' +
       '<section class="section alt"><div class="wrap"><p class="micro eyebrow">Caminos posibles</p><h2>Una pieza lleva <em>a otra</em></h2><div class="bridge-grid">' +
@@ -370,7 +382,7 @@
   }
   views.objeto = function (key) {
     var it = byKey[key]; if (!it) return views.archivo();
-    var i = order.indexOf(key), prev = byKey[order[(i + 9) % 10]], next = byKey[order[(i + 1) % 10]], L = it.layout;
+    markSeen(key); var L = it.layout;
     var head = '<p class="micro">' + it.type + '</p><h1 class="h-xl" tabindex="-1">' + it.title + '</h1><p class="subtitle">' + it.sub + '</p><p class="hook-lead">' + it.hook + '</p>' + (it.find ? '<p class="find"><strong>Qué vas a encontrar.</strong> ' + it.find + '</p>' : '');
     var syn = '<div class="syn"><p class="just">' + it.synopsis + '</p></div>';
     var coverInner = it.playlistCover ? '<div id="plc"></div>' : (it.cover ? '<img src="' + it.cover + '" alt="Portada de ' + it.title + '" decoding="async">' : '');
@@ -382,10 +394,8 @@
     else if (L === 'music') body = '<div class="music"><div class="music-info">' + head + syn + facts(it) + '</div><div class="music-play" id="piece"></div></div><div id="dl"></div>';
     else if (it.mergeSyn) body = '<div class="obj-hero merge' + (it.key === 'playlist' ? ' keep' : '') + '">' + cover + '<div>' + head + facts(it) + '</div></div>' + pieceSec + '<div id="preview"></div><div id="dl"></div>';
     else body = '<div class="obj-hero">' + cover + '<div>' + head + facts(it) + '</div></div>' + syn + pieceSec + '<div id="preview"></div>' + crewSec + '<div id="dl"></div>';
-    var also = (it.also || []).map(function (a) { return '<a class="arrow-link also" href="' + href(a.to) + '">' + a.label + '</a>'; }).join('');
     var d = el('div'); d.innerHTML = '<article class="section obj-page lay-' + L + '"><div class="wrap"><a class="back" href="#/archivo">Volver al archivo</a>' + body +
-      '<div class="cta"><p class="micro">Sigue por aquí</p><a class="cta-link" href="' + href(it.next.to) + '">' + it.next.label + '</a>' + also + '</div>' +
-      '<nav class="obj-nav" aria-label="Otras piezas"><a href="#/objeto/' + prev.key + '"><small>Anterior</small>' + prev.title + '</a><a href="#/objeto/' + next.key + '"><small>Siguiente</small>' + next.title + '</a></nav></div></article>';
+      ctaBlock(it) + '</div></article>';
     var pc = d.querySelector('#piece'); pc.appendChild(piece(it));
     if (it.fiction) pc.appendChild(noteAviso(it.fiction));
     var plc = d.querySelector('#plc'); if (plc) plc.replaceWith(plCover());
