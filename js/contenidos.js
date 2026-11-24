@@ -1,7 +1,7 @@
 /* Datos del archivo. Rutas relativas. Nada se inventa, lo no confirmado se marca como pendiente. */
 window.SITE = {
   yt: {
-    trailer: { id: 'njCXsvJwe1o', url: 'https://youtu.be/njCXsvJwe1o', title: 'Las cruces que cargamos, tráiler oficial (YouTube)', thumb: 'assets/portadas/corto-poster-thumb.webp' },
+    trailer: { id: 'a7x0KclGP6o', url: 'https://www.youtube.com/watch?v=a7x0KclGP6o', title: 'Las cruces que cargamos, tráiler oficial (YouTube)', thumb: 'assets/portadas/corto-poster-thumb.webp' },
     podcast: { id: 'xbeH5zjfC9E', url: 'https://www.youtube.com/watch?v=xbeH5zjfC9E', title: 'Cali en tinieblas, videopodcast (YouTube)', thumb: 'assets/portadas/podcast.webp' },
     bts: { id: 'I5kPRg-zfJg', url: 'https://www.youtube.com/watch?v=I5kPRg-zfJg', title: 'Detrás de cámaras de Las cruces que cargamos (YouTube)', thumb: 'assets/portadas/bts.webp' },
     playlist: { id: 'PLYOD_bt5EBWU', url: 'https://www.youtube.com/playlist?list=PLYOD_bt5EBWU', title: 'Playlist del Buziraco (YouTube)' },
